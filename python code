@@ -1,0 +1,29 @@
+#importing libraries
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import folium
+import webbrowser
+
+#calling the heatmap
+from folium.plugins import HeatMap
+
+#Reading the data
+posi=pd.read_excel(r"C:\Users\Saviero\Desktop\case_dis.xlsx")
+num = 160
+#defining latitude longitude & infection count from the file itself
+lat = np.array(posi["lat"][0:num])
+lon = np.array(posi["long"][0:num])
+inf = np.array(posi["Inf"][0:num],dtype=float)
+
+#defining data status
+data1 = [[lat[i],lon[i],inf[i]] for i in range(num)]
+
+#defining map
+map_osm = folium.Map(location=[23.7808875,90.2792394],zoom_start=12,tiles='StamenTerrain',control_scale=True)
+
+#giving a finishing touch
+HeatMap(data1).add_to(map_osm)
+file_path = r"C:\Users\Saviero\Desktop\test.html"
+map_osm.save(file_path)
+webbrowser.open(file_path)
